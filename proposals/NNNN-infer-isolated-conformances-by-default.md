@@ -210,7 +210,8 @@ struct Counter: /*MainActor*/ Equatable, /*MainActor*/ Incrementable {
 ```
 
 The above inference will take effect in a future language mode, while warning
-programmers in Swift 6 language mode about a potential misuse of the isolated
+programmers in the Swift 6 language mode, and in the Swift 5 language mode with
+complete concurrency checking, about a potential misuse of the isolated
 conformance that will be inferred in the future mode.
 
 Code like `Counter` above is already an error in Swift 6, so it isn't affected.
@@ -221,7 +222,7 @@ example, a main actor-isolated `async` method can satisfy a `nonisolated`
 
 ```swift
 // default-isolation=nonisolated
-// language-version=6
+// language-version=6, or language-version=5 with -strict-concurrency=complete
 
 protocol DataLoader {
   func load() async -> [String]
@@ -239,7 +240,8 @@ func makeLoader() -> some DataLoader {
 }
 ```
 
-In Swift 6 mode, the warnings will be emitted:
+In the Swift 6 language mode, and in the Swift 5 language mode with complete
+concurrency checking, the warnings will be emitted:
 
 - At the conformance, so that the programmer can decide on its isolation where
   it's declared. This is useful for library authors to explicitly specify the
